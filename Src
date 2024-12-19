@@ -1,1 +1,49 @@
+// main class
+
+import java.util.Scanner;
+
+public class GuessingGame {
+    public static void main(String[] args) {
+        DatabaseHandler db = new DatabaseHandler();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome to the Guessing Number Game!");
+        System.out.print("Enter your name: ");
+        String playerName = scanner.nextLine();
+
+        String targetNumber = Utils.generateRandomNumber();
+        System.out.println("Game Started! Guess the 4-digit number.");
+
+        long startTime = System.currentTimeMillis();
+        int moves = 0;
+
+        while (true) {
+            System.out.print("Enter your guess: ");
+            String guess = scanner.nextLine();
+            moves++;
+
+            if (guess.equals(targetNumber)) {
+                long endTime = System.currentTimeMillis();
+                int timeTaken = (int) ((endTime - startTime) / 1000);
+                int score = timeTaken + moves * 10;
+
+                System.out.println("Congratulations! You guessed the number!");
+                System.out.println("Time Taken: " + timeTaken + " seconds");
+                System.out.println("Moves: " + moves);
+
+                db.saveResult(playerName, timeTaken, moves, score);
+
+                String bestPlayer = db.getBestPlayer();
+                System.out.println("Best Player: " + bestPlayer);
+
+                break;
+            } else {
+                String feedback = Utils.evaluateGuess(targetNumber, guess);
+                System.out.println("Feedback: " + feedback);
+            }
+        }
+
+        scanner.close();
+    }
+}
 
