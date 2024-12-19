@@ -1,1 +1,30 @@
+// utility class 
+
+import java.util.Random;
+
+public class Utils {
+    public static String generateRandomNumber() {
+        Random rand = new Random();
+        StringBuilder number = new StringBuilder();
+        while (number.length() < 4) {
+            int digit = rand.nextInt(10);
+            if (!number.toString().contains(String.valueOf(digit))) {
+                number.append(digit);
+            }
+        }
+        return number.toString();
+    }
+
+    public static String evaluateGuess(String target, String guess) {
+        StringBuilder feedback = new StringBuilder();
+        for (int i = 0; i < 4; i++) {
+            if (guess.charAt(i) == target.charAt(i)) {
+                feedback.append("+");
+            } else if (target.contains(String.valueOf(guess.charAt(i)))) {
+                feedback.append("-");
+            }
+        }
+        return feedback.toString();
+    }
+}
 
